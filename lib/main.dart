@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:mediconnect_app/app/app.dart';
+import 'package:mediconnect_app/core/di/service_locator.dart';
 
-void main() {
-  runApp(const MainApp());
-}
+void main() async {
+  // Asegurarse de que Flutter esté inicializado
+  WidgetsFlutterBinding.ensureInitialized();
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  // Cargar variables de entorno
+  await dotenv.load(fileName: '.env');
 
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
-    );
-  }
+  // Inicializar inyección de dependencias
+  await ServiceLocator.instance.init();
+
+  runApp(const App());
 }
